@@ -6,7 +6,7 @@
         <van-tabbar-item :to="item.path">
           <span class="text">{{ item.text }}</span>
           <template #icon>
-            <!-- 使用插槽自定义图标 -->
+            <!-- 使用具名插槽自定义图标 -->
             <img v-if='(currentIndex !== index)' :src="getAssetsURL(item.image)" alt="">
             <img v-else :src="getAssetsURL(item.imageActive)" alt="">
           </template>
@@ -31,7 +31,7 @@ const currentIndex = ref(0)
 .tab-bar {
   img {
     // 修改组件库默认图标大小
-    height: 28px;
+    height: 26px;
   }
 }
 </style>
