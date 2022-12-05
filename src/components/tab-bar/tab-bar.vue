@@ -1,25 +1,21 @@
 <template>
   <div class="tab-bar">
-    <div class="tab-bar-item">
-      <img src="@/assets/imgs/tabbar/tab_home.png" alt="">
-      <span class="text">首页</span>
-    </div>
-    <div class="tab-bar-item">
-      <img src="@/assets/imgs/tabbar/tab_favor.png" alt="">
-      <span class="text">收藏</span>
-    </div>
-    <div class="tab-bar-item">
-      <img src="@/assets/imgs/tabbar/tab_order.png" alt="">
-      <span class="text">订单</span>
-    </div>
-    <div class="tab-bar-item">
-      <img src="@/assets/imgs/tabbar/tab_message.png" alt="">
-      <span class="text">消息</span>
-    </div>
+
+    <!-- 循环渲染四个底栏导航按钮 -->
+    <template v-for="(item, index) in tabBarData">
+      <div class="tab-bar-item">
+        <img :src="getAssetsURL(item.image)" alt="">
+        <span class="text">{{ item.text }}</span>
+      </div>
+    </template>
+
   </div>
 </template>
 
 <script setup>
+import tabBarData from '@/assets/data/tab-bar'
+import {getAssetsURL} from '@/utils/load_assets'
+
 
 </script>
 
