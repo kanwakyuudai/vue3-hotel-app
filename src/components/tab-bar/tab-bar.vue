@@ -3,8 +3,13 @@
 
     <!-- 循环渲染四个底栏导航按钮 -->
     <template v-for="(item, index) in tabBarData">
-      <div class="tab-bar-item">
-        <img :src="getAssetsURL(item.image)" alt="">
+      <div
+      class="tab-bar-item"
+      :class="{active: currentIndex === index}"
+      @click="itemClick(item, index)"
+      >
+        <img v-if='(currentIndex !== index)' :src="getAssetsURL(item.image)" alt="">
+        <img v-else :src="getAssetsURL(item.imageActive)" alt="">
         <span class="text">{{ item.text }}</span>
       </div>
     </template>
@@ -13,10 +18,20 @@
 </template>
 
 <script setup>
+// 获取数据
 import tabBarData from '@/assets/data/tab-bar'
-import {getAssetsURL} from '@/utils/load_assets'
+import { getAssetsURL } from '@/utils/load_assets'
 
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const currentIndex = ref(0)
+const router = useRouter()
+
+const itemClick = (item, index) => {
+  currentIndex.value = index
+  router.push(item.path)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -37,6 +52,9 @@ import {getAssetsURL} from '@/utils/load_assets'
     justify-content: center;
     align-items: center;
 
+    &.active {
+      color: $themeColor;
+    }
     .text {
       font-size: 12px;
       margin-top: 2px;
