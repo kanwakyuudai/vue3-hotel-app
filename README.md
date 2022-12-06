@@ -14,6 +14,8 @@
   - 路由
 - services
   - 网路请求
+  - modules 统一管理每个页面请求的 URL 路径并封装成函数模块
+  - request 封装 Axios 的接口
 - stores
   - 状态管理仓库，使用 Pinia
 - utils

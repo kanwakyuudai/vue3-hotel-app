@@ -19,7 +19,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { getCitiesList } from '@/services';
 const router = useRouter()
+
 
 // 搜索框组件功能
 const searchKeyWord =ref('')
@@ -29,6 +31,14 @@ const cancelSearch = () => {
 
 // 国内海外城市切换
 const switchTab = ref() // 默认绑定标签索引
+
+// 原生 Axios 请求数据的写法：
+// axios.get('url').then(res => {})
+
+// 发起网络请求，拉取数据
+getCitiesList().then(res => {
+
+})
 </script>
 
 <style lang="scss" scoped>
