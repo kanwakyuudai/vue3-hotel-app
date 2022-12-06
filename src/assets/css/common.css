@@ -1,3 +1,10 @@
+:root {
+  --theme-color: #ff9854;
+  /* 全局修改组件库样式 */
+  --van-search-left-icon-color: var(--theme-color) !important;
+  --van-tabs-bottom-bar-color: var(--theme-color) !important;
+}
+
 body {
   font-size: 14px;
 }
