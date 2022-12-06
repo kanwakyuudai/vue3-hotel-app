@@ -10,8 +10,10 @@
     />
     <!-- 国内海外城市标签切换 -->
     <van-tabs v-model:active="switchTab">
-      <van-tab title="国内·港澳台"></van-tab>
-      <van-tab title="海外"></van-tab>
+      <template v-for="(value, key, index) in allCities" :key="key">
+        <van-tab :title="value.title">
+        </van-tab>
+      </template>
     </van-tabs>
   </div>
 </template>
@@ -36,9 +38,13 @@ const switchTab = ref() // 默认绑定标签索引
 // axios.get('url').then(res => {})
 
 // 发起网络请求，拉取数据
+const allCities = ref({})
 getCitiesList().then(res => {
-
+  allCities.value = res.data
 })
+// 目前实现的两个缺点：
+//   一，组件内充斥着请求逻辑；
+//   二，需要手动给子组件（若存在）传数据。（将使用 Pinia 改善）
 </script>
 
 <style lang="scss" scoped>
