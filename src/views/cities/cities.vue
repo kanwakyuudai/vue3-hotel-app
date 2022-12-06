@@ -19,7 +19,10 @@
       </van-tabs>
     </div>
     <div class="content">
-      <template v-for="cityGroup in currentGroup?.cities"><div>{{cityGroup}}</div></template>
+      <template v-for="(group, key, index) in allCities">
+        <!-- 这里使用 v-show 提高切换流畅度 -->
+        <CitiesGroup v-show='(tabActive === key)' :currentGroup="group"></CitiesGroup>
+      </template>
     </div>
   </div>
 </template>
@@ -29,6 +32,7 @@ import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import useCityStore from '@/stores/modules/city'
 import { storeToRefs } from 'pinia';
+import CitiesGroup from './subs/cities-group.vue'
 const router = useRouter()
 
 
@@ -49,11 +53,17 @@ cityStore.fetchAllCitiesData()
 const { allCities } = storeToRefs(cityStore)
 
 // 只要是 ref 取其值都需要 .value ，但是取到的值丢失响应式，因此使用计算属性
+// 之后使用子组件，因此这个常量没有被使用
 const currentGroup = computed(() => allCities.value[tabActive.value])
 </script>
 
 <style lang="scss" scoped>
 .cities-list {
+  .top {
+    // 防止被索引栏侵占空间
+    position: relative;
+    z-index: 10;
+  }
   .content {
     // 为顶部搜索条留出空间
     height: calc(100vh - 98px);
