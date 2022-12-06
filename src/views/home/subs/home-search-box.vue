@@ -1,7 +1,7 @@
 <template>
   <div class="search-box">
     <div class="location">
-      <div class="city" @click="gotoCitiesList">比奇堡</div>
+      <div class="city" @click="gotoCitiesList">{{ currentCity.cityName }}</div>
       <div class="position" @click="getPosition">
         <span class="text">我的位置</span>
         <img src="@/assets/imgs/home/icon_location.png" alt="">
@@ -11,6 +11,8 @@
 </template>
 
 <script setup>
+import useCityStore from '@/stores/modules/city';
+import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -24,6 +26,9 @@ const getPosition = () => {
     alert(`纬度：${res.coords.latitude}经度：${res.coords.longitude}`)
   }, err => {})
 }
+
+const cityStore = useCityStore()
+const { currentCity }= storeToRefs(cityStore)
 </script>
 
 <style lang="scss" scoped>
