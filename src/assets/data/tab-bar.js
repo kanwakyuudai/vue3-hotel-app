@@ -10,7 +10,7 @@ const tabBarData = [
     text: '收藏',
     image: "tabbar/tab_favor.png",
     imageActive: "tabbar/tab_favor_active.png",
-    path: '/favor'
+    path: '/favorite'
   },
   {
     text: '订单',
