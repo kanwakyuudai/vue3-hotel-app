@@ -30,19 +30,23 @@
     :formatter="calendarFormatter"
     color="#ff9854"
     @confirm="calendarConfirm" />
-
+    <!-- 筛选条件 -->
     <div class="section price-counter bottom-gray-line">
       <div class="start">价格不限</div>
       <div class="end">人数不限</div>
     </div>
     <div class="section keyword bottom-gray-line">关键字/位置/民宿名</div>
-
+    <!-- 热门推荐 -->
     <div class="section hot-suggests">
       <template v-for="(item, index) in hotSuggests" :key="index">
         <div class="item"
         style="{color: item.tagText.color}"
         >{{ item.tagText.text }}</div>
       </template>
+    </div>
+    <!-- 搜索栏 -->
+    <div class="section search-btn">
+      <div class="btn" @click="gotoSearch">搜索</div>
     </div>
   </div>
 
@@ -100,6 +104,18 @@ const calendarConfirm = (dateRange) => {
   // 关闭日历并更新停留天数
   showCalendar.value = false
   stayNights.value = countDateDiff(dateRange[0], dateRange[1])
+}
+
+// 跳转搜索
+const gotoSearch = () => {
+  router.push({
+    path: '/search',
+    query: {
+      checkInDate: checkInDate.value,
+      checkOutDate: checkOutDate.value,
+      currentCity: currentCity.value.cityName
+    }
+  })
 }
 </script>
 
@@ -191,6 +207,8 @@ const calendarConfirm = (dateRange) => {
 }
 
 .hot-suggests {
+  margin: 10px 0;
+  height: auto;
   .item {
     background-color: #F1F3F5;
     padding: 4px 8px;
@@ -198,6 +216,21 @@ const calendarConfirm = (dateRange) => {
     border-radius: 14px;
     font-size: 12px;
     line-height: 1;
+  }
+}
+
+.search-btn {
+  .btn {
+    width: 342px;
+    height: 38px;
+    max-height: 50px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    background-image: $themeGradient;
   }
 }
 </style>

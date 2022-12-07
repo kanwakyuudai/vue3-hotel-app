@@ -31,7 +31,14 @@ const router = createRouter({
         // 此路由不展示底栏，全屏显示
         hideTabbar: true
       }
-    }
+    },
+    {
+      path: '/search',
+      component: () => import ('@/views/search/search.vue'),
+      meta: {
+        hideTabbar: true
+      }
+    },
   ]
 })
 
