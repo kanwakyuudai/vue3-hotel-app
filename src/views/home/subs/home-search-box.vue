@@ -30,6 +30,20 @@
     :formatter="calendarFormatter"
     color="#ff9854"
     @confirm="calendarConfirm" />
+
+    <div class="section price-counter bottom-gray-line">
+      <div class="start">价格不限</div>
+      <div class="end">人数不限</div>
+    </div>
+    <div class="section keyword bottom-gray-line">关键字/位置/民宿名</div>
+
+    <div class="section hot-suggests">
+      <template v-for="(item, index) in hotSuggests" :key="index">
+        <div class="item"
+        style="{color: item.tagText.color}"
+        >{{ item.tagText.text }}</div>
+      </template>
+    </div>
   </div>
 
 </template>
@@ -37,16 +51,25 @@
 <script setup>
 import { ref } from 'vue';
 import useCityStore from '@/stores/modules/city';
+import useHomeStore from '@/stores/modules/home';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { formatMonthDay, countDateDiff } from '@/utils/date_format'
 import { calendarFormatter } from '@/utils/calendar_formatter'
 import convertToChinese from '@/utils/number_convert_to_chinese'
+
+
 // 路由
 const router = useRouter()
 // 拿取仓库数据
 const cityStore = useCityStore()
 const { currentCity } = storeToRefs(cityStore)
+// 发起请求拉取数据
+const homeStore = useHomeStore()
+homeStore.fetchHotSuggestsData()
+const { hotSuggests } = storeToRefs(homeStore)
+
+
 // 城市列表
 const gotoCitiesList = () => {
   router.push('/cities')
@@ -57,6 +80,8 @@ const getPosition = () => {
     alert(`纬度：${res.coords.latitude}经度：${res.coords.longitude}`)
   }, err => {alert(`获取定位失败，请确认是否赋予定位权限！`)})
 }
+
+
 // 在页面上显示入住-今天，离店-明天
 const today = new Date()
 const tomorrow = new Date().setDate(new Date().getDate() + 1)
@@ -115,8 +140,9 @@ const calendarConfirm = (dateRange) => {
   align-items: center;
   padding: 0 20px;
   color: #999;
+  height: 44px;
 
-  .check-in {
+  .check-in, .start {
     flex: 1;
     display: flex;
     height: 44px;
@@ -155,6 +181,23 @@ const calendarConfirm = (dateRange) => {
       font-size: 15px;
       font-weight: 500;
     }
+  }
+}
+
+.price-counter {
+  .start {
+    border-right: 1px solid #f8f9f9;
+  }
+}
+
+.hot-suggests {
+  .item {
+    background-color: #F1F3F5;
+    padding: 4px 8px;
+    margin: 4px;
+    border-radius: 14px;
+    font-size: 12px;
+    line-height: 1;
   }
 }
 </style>
