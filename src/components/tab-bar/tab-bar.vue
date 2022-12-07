@@ -29,6 +29,7 @@ const currentIndex = ref(0)
 
 <style lang="scss" scoped>
 .tab-bar {
+  height: 50px;
   img {
     // 修改组件库默认图标大小
     height: 26px;
