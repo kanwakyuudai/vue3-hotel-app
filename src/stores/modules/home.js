@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
-import { getHotSuggests, getCategories } from '@/services';
+import { getHotSuggests, getCategories, getHouselists } from '@/services';
 
 const useHomeStore = defineStore('home', {
   state: () => ({
     hotSuggests: [],
-    categories: []
+    categories: [],
+    page: 1,
+    houselists: []
   }),
   actions: {
     async fetchHotSuggestsData() {
@@ -14,7 +16,12 @@ const useHomeStore = defineStore('home', {
     async fetchCategoriesData() {
       const res = await getCategories()
       this.categories = res.data
-    }
+    },
+    async fetchHouselistsData() {
+      const res = await getHouselists(this.page++)
+      // 不能使用赋值语句，会替换而不是新增数据
+      this.houselists.push(...res.data)
+    },
   }
 })
 

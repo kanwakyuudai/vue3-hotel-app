@@ -6,6 +6,7 @@
     </div>
     <home-search-box></home-search-box>
     <home-categories></home-categories>
+    <home-content></home-content>
   </div>
 </template>
 
@@ -13,6 +14,7 @@
 import HomeNavBar from './subs/home-nav-bar.vue';
 import HomeSearchBox from './subs/home-search-box.vue';
 import HomeCategories from './subs/home-categories.vue';
+import HomeContent from './subs/home-content.vue';
 </script>
 
 <style lang="scss" scoped>
