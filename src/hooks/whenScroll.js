@@ -1,17 +1,23 @@
 import { ref } from "vue"
 import { onActivated, onDeactivated, onMounted, onUnmounted } from "vue"
+import { throttle } from 'underscore'
 
-export default function whenScrollToBottom() {
-  let isReachBottom = ref(false)
+export default function useScroll() {
+  const isReachBottom = ref(false)
+  const clientHeight = ref(0)
+  const scrollTop = ref(0)
+  const scrollHeight = ref(0)
 
-  const scorllHandler = () => {
-    const clientHeight = document.documentElement.clientHeight
-    const scrollTop = document.documentElement.scrollTop
-    const scrollHeight = document.documentElement.scrollHeight
-    if (clientHeight + scrollTop >= scrollHeight - 1) {
+  const scorllHandler = throttle(() => {
+    clientHeight.value = document.documentElement.clientHeight
+    scrollTop.value = document.documentElement.scrollTop
+    scrollHeight.value = document.documentElement.scrollHeight
+    console.log(1)
+    if (clientHeight.value + scrollTop.value >= scrollHeight.value - 1) {
       isReachBottom.value = true
     }
-  }
+  }, 1000)
+
   onMounted(() => {
     window.addEventListener('scroll', scorllHandler)
   })
@@ -19,5 +25,5 @@ export default function whenScrollToBottom() {
     window.removeEventListener('scroll', scorllHandler)
   })
 
-  return { isReachBottom }
+  return { isReachBottom, clientHeight, scrollTop, scrollHeight }
 }
