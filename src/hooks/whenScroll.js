@@ -12,11 +12,10 @@ export default function useScroll() {
     clientHeight.value = document.documentElement.clientHeight
     scrollTop.value = document.documentElement.scrollTop
     scrollHeight.value = document.documentElement.scrollHeight
-    console.log(1)
     if (clientHeight.value + scrollTop.value >= scrollHeight.value - 1) {
       isReachBottom.value = true
     }
-  }, 1000)
+  }, 100)
 
   onMounted(() => {
     window.addEventListener('scroll', scorllHandler)

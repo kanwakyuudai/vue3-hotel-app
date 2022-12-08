@@ -1,6 +1,6 @@
 <template>
   <div class="tab-bar">
-    <van-tabbar v-model="currentIndex" active-color="#ff9854">
+    <van-tabbar v-model="currentIndex" active-color="#ff9854" route>
       <template v-for="(item, index) in tabBarData">
         <!-- 使用组件库自动路由 -->
         <van-tabbar-item :to="item.path">
@@ -21,10 +21,17 @@
 import tabBarData from '@/assets/data/tab-bar'
 import { getAssetsURL } from '@/utils/load_assets'
 
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useRoute } from 'vue-router';
 
+const route = useRoute()
 // 响应式记录当前点击按钮
 const currentIndex = ref(0)
+watch(route, (newRoute) => {
+  const index = tabBarData.findIndex(item => item.path === newRoute.path)
+  if (index < 0) return
+  currentIndex.value = index
+})
 </script>
 
 <style lang="scss" scoped>
