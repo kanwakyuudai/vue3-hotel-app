@@ -11,24 +11,23 @@
 </template>
 
 <script setup>
+import { watch } from 'vue';
 import HomeNavBar from './subs/home-nav-bar.vue';
 import HomeSearchBox from './subs/home-search-box.vue';
 import HomeCategories from './subs/home-categories.vue';
 import HomeContent from './subs/home-content.vue';
 import useHomeStore from '@/stores/modules/home';
+import whenScrollToBottom from '@/hooks/whenScroll'
 
 const homeStore = useHomeStore()
+const {isReachBottom} = whenScrollToBottom()
 
-function loadmore() {
-  homeStore.fetchHouselistsData()
-}
-
-window.addEventListener('scroll', () => {
-  const clientHeight = document.documentElement.clientHeight
-  const scrollTop = document.documentElement.scrollTop
-  const scrollHeight = document.documentElement.scrollHeight
-  if (clientHeight + scrollTop >= scrollHeight - clientHeight * 0.4) {
-    loadmore()
+watch(isReachBottom, (newValue) => {
+  if (newValue) {
+    // 此处调用返回 Promise 因此可以调用 then 确保拿到新数据后在将是否达到底部设置为伪
+    homeStore.fetchHouselistsData().then(() => {
+      isReachBottom.value = false
+    })
   }
 })
 </script>
