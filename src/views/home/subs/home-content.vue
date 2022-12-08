@@ -6,7 +6,6 @@
         <ItemType9 v-if="item.discoveryContentType === 9" :item-data="item.data"></ItemType9>
         <ItemType3 v-else-if="item.discoveryContentType === 3" :item-data="item.data"></ItemType3>
       </template>
-      <button @click="loadmore">more</button>
     </div>
   </div>
 </template>
@@ -20,10 +19,6 @@ import { storeToRefs } from 'pinia';
 const homeStore = useHomeStore()
 homeStore.fetchHouselistsData()
 const { houselists } = storeToRefs(homeStore)
-
-function loadmore() {
-  homeStore.fetchHouselistsData()
-}
 </script>
 
 <style lang="scss" scoped>

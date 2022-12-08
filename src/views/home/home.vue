@@ -15,6 +15,22 @@ import HomeNavBar from './subs/home-nav-bar.vue';
 import HomeSearchBox from './subs/home-search-box.vue';
 import HomeCategories from './subs/home-categories.vue';
 import HomeContent from './subs/home-content.vue';
+import useHomeStore from '@/stores/modules/home';
+
+const homeStore = useHomeStore()
+
+function loadmore() {
+  homeStore.fetchHouselistsData()
+}
+
+window.addEventListener('scroll', () => {
+  const clientHeight = document.documentElement.clientHeight
+  const scrollTop = document.documentElement.scrollTop
+  const scrollHeight = document.documentElement.scrollHeight
+  if (clientHeight + scrollTop >= scrollHeight - clientHeight * 0.4) {
+    loadmore()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
