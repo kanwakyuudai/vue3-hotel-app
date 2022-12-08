@@ -52,9 +52,9 @@ const itemRate = computed(() => {
         position: absolute;
         bottom: 0;
         padding: 8px 10px;
-        color: #fff;
-        background-color: rgba(95, 95, 95, .48);
-
+        color: #eee;
+        background-color: rgba(25, 25, 25, .25);
+        text-shadow: 0px 0px 1px #fff;
         .summary {
           font-size: 12px;
         }
