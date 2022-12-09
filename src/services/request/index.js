@@ -1,7 +1,7 @@
 import axios from "axios";
-// import { useLoadingStore } from "@/store/modules/loading";
+import useMainStore from "@/stores/modules/main";
 import { baseURL, TIMEOUT } from "./config";
-// const loadingStore = useLoadingStore();
+const mainStore = useMainStore();
 class HYRequest {
   constructor(baseURL) {
     this.instance = axios.create({
@@ -11,7 +11,7 @@ class HYRequest {
   }
 
   request(config) {
-    // loadingStore.changeLoading(true);
+    mainStore.isLoading = true;
     return new Promise((resolve, reject) => {
       this.instance
         .request(config)
@@ -22,9 +22,9 @@ class HYRequest {
           console.log("request err:", err);
           reject(err);
         })
-        // .finally(() => {
-        //   loadingStore.changeLoading(false);
-        // });
+        .finally(() => {
+          mainStore.isLoading = false;
+        });
     });
   }
 

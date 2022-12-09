@@ -7,7 +7,8 @@ tomorrow.setDate(today.getDate() + 1)
 const useMainStore = defineStore('main', {
   state: () => ({
     today: today,
-    tomorrow: tomorrow
+    tomorrow: tomorrow,
+    isLoading: false
   })
 })
 
