@@ -8,11 +8,11 @@
     <div class="select-time">
       <div class="item start">
         <span class="name">住</span>
-        <span class="date">8.1</span>
+        <span class="date">{{checkInDate}}</span>
       </div>
       <div class="item end">
         <span class="name">离</span>
-        <span class="date">8.2</span>
+        <span class="date">{{checkOutDate}}</span>
       </div>
     </div>
     <div class="content ellipsis-text-1">
@@ -32,7 +32,17 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import useMainStore from '@/stores/modules/main';
+import { storeToRefs } from 'pinia';
+import { formatMonthDay, countDateDiff } from '@/utils/date_format'
 
+
+const mainStore = useMainStore()
+const { today, tomorrow } = storeToRefs(mainStore)
+
+const checkInDate = computed(() => formatMonthDay(today.value, 'MM.DD'))
+const checkOutDate = computed(() => formatMonthDay(tomorrow.value, 'MM.DD'))
 </script>
 
 <style lang="scss" scoped>
@@ -112,7 +122,7 @@
 
     .key-word {
       max-width: 155px;
-      font-size: v-bind("props.keyWordFontSize");
+      font-size: 12px;
     }
 
     .icon-cancel {

@@ -53,9 +53,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import useCityStore from '@/stores/modules/city';
 import useHomeStore from '@/stores/modules/home';
+import useMainStore from '@/stores/modules/main';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { formatMonthDay, countDateDiff } from '@/utils/date_format'
@@ -85,22 +86,21 @@ const getPosition = () => {
   }, err => {alert(`获取定位失败，请确认是否赋予定位权限！`)})
 }
 
-
-// 在页面上显示入住-今天，离店-明天
-const today = new Date()
-const tomorrow = new Date().setDate(new Date().getDate() + 1)
-
-const checkInDate = ref(formatMonthDay(today))
-const checkOutDate = ref(formatMonthDay(tomorrow))
+// 日期相关数据
+const mainStore = useMainStore()
+const { today, tomorrow } = storeToRefs(mainStore)
+// 根据数据格式化文本
+const checkInDate = computed(() => formatMonthDay(today.value))
+const checkOutDate = computed(() => formatMonthDay(tomorrow.value))
 // 计算提留天数
-const stayNights = ref(countDateDiff(today, tomorrow))
+const stayNights = ref(countDateDiff(today.value, tomorrow.value))
 // 默认不展示日历
 const showCalendar = ref(false)
 // 当用户选择好日期时调用
 const calendarConfirm = (dateRange) => {
   // 将选择区间在页面上展示
-  checkInDate.value = formatMonthDay(dateRange[0])
-  checkOutDate.value = formatMonthDay(dateRange[1])
+  mainStore.today = dateRange[0]
+  mainStore.tomorrow = dateRange[1]
   // 关闭日历并更新停留天数
   showCalendar.value = false
   stayNights.value = countDateDiff(dateRange[0], dateRange[1])
