@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <van-nav-bar
+      title="详情"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+    />
+    <div class="main" v-if="mainPart">
+      <DetailSwipe :swipe-data="mainPart.topModule.housePicture.housePics"></DetailSwipe>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useRoute, useRouter } from 'vue-router';
+import { getDetailInfos } from '@/services'
+import { ref, computed } from 'vue';
+import DetailSwipe from './subs/detail-swipe.vue'
+
+const router = useRouter()
+const route = useRoute()
+const onClickLeft = () => {
+  router.back()
+}
+
+const houseId = route.params.id
+const detailInfos = ref({})
+const mainPart = computed(() => detailInfos.value.mainPart)
+getDetailInfos(houseId).then(res => {
+  detailInfos.value = res.data
+})
+
+</script>
+
+<style lang="scss" scoped>
+
+</style>
