@@ -24,11 +24,12 @@
       </div>
     </div>
     <div class="position extra">
-      <div class="left">
+      <div class="left address">
         {{ infos.nearByPosition.address }}
       </div>
-      <div class="right address">
+      <div class="right">
         地图·周边
+        <van-icon name="arrow" />
       </div>
     </div>
   </div>
