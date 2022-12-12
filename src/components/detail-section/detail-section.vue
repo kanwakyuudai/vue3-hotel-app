@@ -8,7 +8,7 @@
         默认内容
       </slot>
     </div>
-    <div class="footer">
+    <div class="footer" v-if="moreText.length">
       <span class="more">{{moreText}}</span>
       <van-icon name="arrow"></van-icon>
     </div>
@@ -23,7 +23,7 @@ defineProps({
   },
   moreText: {
     type: String,
-    default: '查看更多内容'
+    default: ''
   }
 })
 </script>

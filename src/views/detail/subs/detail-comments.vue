@@ -1,6 +1,6 @@
 <template>
   <div class="comment-area">
-    <DetailSection header-text="房客点评" :more-text="`查看全部${comment.totalCount}条评价`">
+    <DetailSection title="房客点评" :more-text="`查看全部${comment.totalCount}条评价`">
       <div class="comment">
         <div class="header">
           <div class="left">

@@ -12,6 +12,7 @@
       <DetailFacilities :house-facility="mainPart.dynamicModule.facilityModule.houseFacility"></DetailFacilities>
       <DetailLandlord :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
       <DetailComments :comment="mainPart.dynamicModule.commentModule"></DetailComments>
+      <DetailNotices :must-know="mainPart.dynamicModule.rulesModule.orderRules"></DetailNotices>
     </div>
   </div>
 </template>
@@ -25,6 +26,7 @@ import DetailInfos from './subs/detail-infos.vue';
 import DetailFacilities from './subs/detail-facilities.vue';
 import DetailLandlord from './subs/detail-landlord.vue'
 import DetailComments from './subs/detail-comments.vue';
+import DetailNotices from './subs/detail-notices.vue';
 const router = useRouter()
 const route = useRoute()
 const onClickLeft = () => {
