@@ -10,6 +10,7 @@
       <DetailSwipe :swipe-data="mainPart.topModule.housePicture.housePics"></DetailSwipe>
       <DetailInfos :infos="mainPart.topModule"></DetailInfos>
       <DetailFacilities :house-facility="mainPart.dynamicModule.facilityModule.houseFacility"></DetailFacilities>
+      <DetailLandlord :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
     </div>
   </div>
 </template>
@@ -21,6 +22,7 @@ import { ref, computed } from 'vue';
 import DetailSwipe from './subs/detail-swipe.vue';
 import DetailInfos from './subs/detail-infos.vue';
 import DetailFacilities from './subs/detail-facilities.vue';
+import DetailLandlord from './subs/detail-landlord.vue'
 const router = useRouter()
 const route = useRoute()
 const onClickLeft = () => {
