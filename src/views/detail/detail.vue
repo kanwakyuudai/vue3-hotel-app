@@ -13,6 +13,7 @@
       <DetailLandlord :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
       <DetailComments :comment="mainPart.dynamicModule.commentModule"></DetailComments>
       <DetailNotices :must-know="mainPart.dynamicModule.rulesModule.orderRules"></DetailNotices>
+      <!-- <DetailMap :position="mainPart.dynamicModule.positionModule"></DetailMap> -->
     </div>
   </div>
 </template>
@@ -24,9 +25,10 @@ import { ref, computed } from 'vue';
 import DetailSwipe from './subs/detail-swipe.vue';
 import DetailInfos from './subs/detail-infos.vue';
 import DetailFacilities from './subs/detail-facilities.vue';
-import DetailLandlord from './subs/detail-landlord.vue'
+import DetailLandlord from './subs/detail-landlord.vue';
 import DetailComments from './subs/detail-comments.vue';
 import DetailNotices from './subs/detail-notices.vue';
+import DetailMap from './subs/detail-map.vue';
 const router = useRouter()
 const route = useRoute()
 const onClickLeft = () => {
