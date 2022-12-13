@@ -22,12 +22,16 @@ const props = defineProps({
 const mapRef = ref()
 
 onMounted(() => {
-    const map = new BMapGL.Map(mapRef.value);//在容器中创建一个地图
-    const point = new BMapGL.Point(props.position.longitude, props.position.latitude);//定义一个中心点坐标
-    map.centerAndZoom(point,12);//设定地图的中心点和坐标并将地图显示在地图容器中
+  const map = new BMapGL.Map(mapRef.value); // 创建地图实例
+  const point = new BMapGL.Point(props.position.longitude, props.position.latitude); // 创建点坐标
+  map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
+  const marker = new BMapGL.Marker(point);
+  map.addOverlay(marker)
 })
 </script>
 
 <style lang="scss" scoped>
-
+.baiduMap {
+  height: 250px;
+}
 </style>
