@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class='detail top-page' ref="detailRef">
+    <TabControl :titles="['描述','设施', '房东', '评论', '须知', '周边']"
+    v-if="showTabControl"
+    class="tabs"
+    @tab-item-click="tabClick"
+    ></TabControl>
     <van-nav-bar
       title="详情"
       left-text="返回"
@@ -8,12 +13,12 @@
     />
     <div class="main" v-if="mainPart">
       <DetailSwipe :swipe-data="mainPart.topModule.housePicture.housePics"></DetailSwipe>
-      <DetailInfos :infos="mainPart.topModule"></DetailInfos>
-      <DetailFacilities :house-facility="mainPart.dynamicModule.facilityModule.houseFacility"></DetailFacilities>
-      <DetailLandlord :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
-      <DetailComments :comment="mainPart.dynamicModule.commentModule"></DetailComments>
-      <DetailNotices :must-know="mainPart.dynamicModule.rulesModule.orderRules"></DetailNotices>
-      <DetailMap :position="mainPart.dynamicModule.positionModule"></DetailMap>
+      <DetailInfos :ref='getSectionRef' :infos="mainPart.topModule"></DetailInfos>
+      <DetailFacilities :ref='getSectionRef' :house-facility="mainPart.dynamicModule.facilityModule.houseFacility"></DetailFacilities>
+      <DetailLandlord :ref='getSectionRef' :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
+      <DetailComments :ref='getSectionRef' :comment="mainPart.dynamicModule.commentModule"></DetailComments>
+      <DetailNotices :ref='getSectionRef' :must-know="mainPart.dynamicModule.rulesModule.orderRules"></DetailNotices>
+      <DetailMap :ref='getSectionRef' :position="mainPart.dynamicModule.positionModule"></DetailMap>
       <DetailIntro :price-intro="mainPart.introductionModule"></DetailIntro>
       <div class="footer">
         <img src="@/assets/imgs/detail/icon_ensure.png" alt="">
@@ -27,6 +32,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { getDetailInfos } from '@/services'
 import { ref, computed } from 'vue';
+import TabControl from '@/components/tab-control/tab-control.vue';
 import DetailSwipe from './subs/detail-swipe.vue';
 import DetailInfos from './subs/detail-infos.vue';
 import DetailFacilities from './subs/detail-facilities.vue';
@@ -35,12 +41,16 @@ import DetailComments from './subs/detail-comments.vue';
 import DetailNotices from './subs/detail-notices.vue';
 import DetailMap from './subs/detail-map.vue';
 import DetailIntro from './subs/detail-intro.vue';
+import useScroll from '@/hooks/whenScroll';
+
+// 处理顶栏返回路由
 const router = useRouter()
 const route = useRoute()
 const onClickLeft = () => {
   router.back()
 }
 
+// 获取ID拉取数据
 const houseId = route.params.id
 const detailInfos = ref({})
 const mainPart = computed(() => detailInfos.value.mainPart)
@@ -48,9 +58,37 @@ getDetailInfos(houseId).then(res => {
   detailInfos.value = res.data
 })
 
+// 监测滚动展示标签
+const detailRef = ref()
+const { scrollTop } = useScroll(detailRef);
+const showTabControl = computed(() => {
+  return scrollTop.value >= 300
+})
+
+// 绑定组件
+const sectionEls = []
+const getSectionRef = (value) => {
+  sectionEls.push(value.$el)
+}
+// 点击标签跳转
+const tabClick = (index) => {
+  let distance = sectionEls[index].offsetTop
+  if (index !== 0) distance = distance - 44
+  detailRef.value.scrollTo({
+    top: distance,
+    behavior: "smooth"
+  })
+}
 </script>
 
 <style lang="scss" scoped>
+.tabs {
+  position: fixed;
+  z-index: 9;
+  left: 0;
+  right: 0;
+  top: 0;
+}
 .footer {
   display: flex;
   flex-direction: column;
