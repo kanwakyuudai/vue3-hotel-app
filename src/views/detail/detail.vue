@@ -4,6 +4,7 @@
     v-if="showTabControl"
     class="tabs"
     @tab-item-click="tabClick"
+    ref="tabControlRef"
     ></TabControl>
     <van-nav-bar
       title="详情"
@@ -31,7 +32,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { getDetailInfos } from '@/services'
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import TabControl from '@/components/tab-control/tab-control.vue';
 import DetailSwipe from './subs/detail-swipe.vue';
 import DetailInfos from './subs/detail-infos.vue';
@@ -87,6 +88,23 @@ const tabClick = (index) => {
     behavior: "smooth"
   })
 }
+
+// 页面滚动时标签自适应匹配索引高亮
+const tabControlRef = ref()
+watch(scrollTop, (currScrlTop) => {
+  // 获取全部组件的滚动偏移量
+  const els = Object.values(sectionEls.value)
+  const offsets = els.map(el => el.offsetTop)
+  // 默认索引是最后一个，加 44 是标签栏自身高度偏移量
+  let index = offsets.length - 1
+  for (let i = 0; i < offsets.length; i++) {
+    if (offsets[i] > currScrlTop + 44) {
+      index = i - 1
+      break
+    }
+  }
+  tabControlRef.value?.setCurrentIndex(index)
+})
 </script>
 
 <style lang="scss" scoped>
