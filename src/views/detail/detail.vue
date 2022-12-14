@@ -1,6 +1,6 @@
 <template>
   <div class='detail top-page' ref="detailRef">
-    <TabControl :titles="['描述','设施', '房东', '评论', '须知', '周边']"
+    <TabControl :titles="names"
     v-if="showTabControl"
     class="tabs"
     @tab-item-click="tabClick"
@@ -13,12 +13,12 @@
     />
     <div class="main" v-if="mainPart">
       <DetailSwipe :swipe-data="mainPart.topModule.housePicture.housePics"></DetailSwipe>
-      <DetailInfos :ref='getSectionRef' :infos="mainPart.topModule"></DetailInfos>
-      <DetailFacilities :ref='getSectionRef' :house-facility="mainPart.dynamicModule.facilityModule.houseFacility"></DetailFacilities>
-      <DetailLandlord :ref='getSectionRef' :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
-      <DetailComments :ref='getSectionRef' :comment="mainPart.dynamicModule.commentModule"></DetailComments>
-      <DetailNotices :ref='getSectionRef' :must-know="mainPart.dynamicModule.rulesModule.orderRules"></DetailNotices>
-      <DetailMap :ref='getSectionRef' :position="mainPart.dynamicModule.positionModule"></DetailMap>
+      <DetailInfos name="描述" :ref='getSectionRef' :infos="mainPart.topModule"></DetailInfos>
+      <DetailFacilities name="设施" :ref='getSectionRef' :house-facility="mainPart.dynamicModule.facilityModule.houseFacility"></DetailFacilities>
+      <DetailLandlord name="房东" :ref='getSectionRef' :landlord="mainPart.dynamicModule.landlordModule"></DetailLandlord>
+      <DetailComments name="评论" :ref='getSectionRef' :comment="mainPart.dynamicModule.commentModule"></DetailComments>
+      <DetailNotices name="须知" :ref='getSectionRef' :must-know="mainPart.dynamicModule.rulesModule.orderRules"></DetailNotices>
+      <DetailMap name="周边" :ref='getSectionRef' :position="mainPart.dynamicModule.positionModule"></DetailMap>
       <DetailIntro :price-intro="mainPart.introductionModule"></DetailIntro>
       <div class="footer">
         <img src="@/assets/imgs/detail/icon_ensure.png" alt="">
@@ -66,13 +66,21 @@ const showTabControl = computed(() => {
 })
 
 // 绑定组件
-const sectionEls = []
+const sectionEls = ref({})
+const names = computed(() => {
+  return Object.keys(sectionEls.value)
+})
 const getSectionRef = (value) => {
-  sectionEls.push(value.$el)
+  // 组件卸载时调用此函数 value 为空，直接返回
+  if (!value) return
+  const name = value.$el.getAttribute('name')
+  sectionEls.value[name] = value.$el
 }
 // 点击标签跳转
 const tabClick = (index) => {
-  let distance = sectionEls[index].offsetTop
+  const key = Object.keys(sectionEls.value)[index]
+  const el = sectionEls.value[key]
+  let distance = el.offsetTop
   if (index !== 0) distance = distance - 44
   detailRef.value.scrollTo({
     top: distance,
