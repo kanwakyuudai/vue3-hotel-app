@@ -78,11 +78,18 @@ const getSectionRef = (value) => {
   sectionEls.value[name] = value.$el
 }
 // 点击标签跳转
+let isClick = false // 记录是否在点击
+let currDistance = -1 // 记录目前滑动距离
+
 const tabClick = (index) => {
   const key = Object.keys(sectionEls.value)[index]
   const el = sectionEls.value[key]
   let distance = el.offsetTop
   if (index !== 0) distance = distance - 44
+
+  isClick = true // 当前是点击
+  currDistance = distance // 记录目前滑动距离
+
   detailRef.value.scrollTo({
     top: distance,
     behavior: "smooth"
@@ -92,6 +99,10 @@ const tabClick = (index) => {
 // 页面滚动时标签自适应匹配索引高亮
 const tabControlRef = ref()
 watch(scrollTop, (currScrlTop) => {
+  // 如果点击后已经跳转到正确位置上，取消正在点击的状态
+  if (Math.round(currScrlTop) === currDistance) isClick = false
+  // 如果在点击时触发，取消自适应匹配
+  if (isClick) return
   // 获取全部组件的滚动偏移量
   const els = Object.values(sectionEls.value)
   const offsets = els.map(el => el.offsetTop)
