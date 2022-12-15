@@ -10,7 +10,7 @@ const route = useRoute()
 <template>
   <div class="app">
     <router-view v-slot="props">
-      <keep-alive include="home">
+      <keep-alive include="home, cities">
         <component :is="props.Component"></component>
       </keep-alive>
     </router-view>

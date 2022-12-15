@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home top-page" ref="homeRef">
     <home-nav-bar></home-nav-bar>
     <div class="banner">
       <img src="@/assets/imgs/home/banner.webp" alt="">
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onActivated } from 'vue';
 import HomeNavBar from './subs/home-nav-bar.vue';
 import HomeSearchBox from './subs/home-search-box.vue';
 import HomeCategories from './subs/home-categories.vue';
@@ -24,7 +24,8 @@ import useHomeStore from '@/stores/modules/home';
 import useScroll from '@/hooks/whenScroll'
 
 const homeStore = useHomeStore()
-const { isReachBottom, clientHeight, scrollTop, scrollHeight } = useScroll()
+const homeRef = ref()
+const { isReachBottom, clientHeight, scrollTop, scrollHeight } = useScroll(homeRef)
 
 watch(isReachBottom, (newValue) => {
   if (newValue) {
@@ -46,6 +47,13 @@ watch(isReachBottom, (newValue) => {
 
 const isShowSearchBar = computed(() => {
   return scrollTop.value >= 350
+})
+
+// 跳回首页时，保留滑动位置
+onActivated(() => {
+  homeRef.value?.scrollTo({
+    top: scrollTop.value
+  })
 })
 </script>
 
